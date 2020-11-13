@@ -1,18 +1,14 @@
-# dwm version
-VERSION = 6.1
+# kotatko version
+VERSION = 0.1
 
 # Customize below to fit your system
 
 # paths
-PREFIX = /usr/local
+PREFIX = /usr
 MANPREFIX = ${PREFIX}/share/man
 
 X11INC = /usr/X11R6/include
 X11LIB = /usr/X11R6/lib
-
-# Xinerama, comment if you don't want it
-XINERAMALIBS  = -lXinerama
-XINERAMAFLAGS = -DXINERAMA
 
 # freetype
 FREETYPELIBS = -lfontconfig -lXft
@@ -22,17 +18,12 @@ FREETYPEINC = /usr/include/freetype2
 
 # includes and libs
 INCS = -I${X11INC} -I${FREETYPEINC}
-LIBS = -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS}
+LIBS = -L${X11LIB} -lX11 ${FREETYPELIBS} -lX11-xcb -lxcb -lxcb-res
 
 # flags
-CPPFLAGS = -D_BSD_SOURCE -D_POSIX_C_SOURCE=2 -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
-#CFLAGS   = -g -std=c99 -pedantic -Wall -O0 ${INCS} ${CPPFLAGS}
-CFLAGS   = -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os ${INCS} ${CPPFLAGS}
-LDFLAGS  = -s ${LIBS}
-
-# Solaris
-#CFLAGS = -fast ${INCS} -DVERSION=\"${VERSION}\"
-#LDFLAGS = ${LIBS}
+CPPFLAGS = -D_DEFAULT_SOURCE -DVERSION=\"${VERSION}\"
+CFLAGS   = -std=c99 -march=native -Ofast -fgraphite-identity -floop-nest-optimize -fdevirtualize-at-ltrans -fipa-pta -fno-semantic-interposition -falign-functions=32 -flto=8 -fuse-linker-plugin -pipe ${INCS} ${CPPFLAGS}
+LDFLAGS  = ${CFLAGS} -s -Wl,-O1 -Wl,--as-needed -Wl,--sort-common -Wl,--hash-style=gnu -z combreloc ${LIBS}
 
 # compiler and linker
 CC = cc
