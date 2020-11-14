@@ -64,7 +64,6 @@ The codebase is still evolving.  The current plans include:
 * Potentially integrating the [pertag patch][110].
 * Revising the codebase, especially the integrated patches.
 * Major code cleanup, style unification and restructuring.
-* Dropping `config.mk` and making the `Makefile` more flexible on its own.
 * Rewriting the manual page.
 
 ## Authors & License

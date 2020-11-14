@@ -1,60 +1,61 @@
 # kotatko - a fluffy window manager
 # See LICENSE file for copyright and license details.
 
-include config.mk
+app = kotatko
 
-SRC = drw.c kotatko.c util.c
-OBJ = ${SRC:.c=.o}
+cflags = -std=c99 -D_DEFAULT_SOURCE -Wall
+ldflags = -lX11 -lXft -lfontconfig -lX11-xcb -lxcb -lxcb-res
 
-all: options kotatko
+CC ?= cc
+CFLAGS ?= -march=native -Ofast -fgraphite-identity -floop-nest-optimize -fdevirtualize-at-ltrans -fipa-pta -fno-semantic-interposition -falign-functions=32 -flto=auto -fuse-linker-plugin -pipe
+LDFLAGS ?= $(CFLAGS) -Wl,-O1 -Wl,--as-needed -Wl,--sort-common -Wl,--hash-style=gnu -z combreloc
 
-options:
-	@echo kotatko build options:
-	@echo "CFLAGS   = ${CFLAGS}"
-	@echo "LDFLAGS  = ${LDFLAGS}"
-	@echo "CC       = ${CC}"
+ifdef DEBUG
+	cflags += -g
+else
+	ldflags += -s
+endif
 
-.c.o:
-	@echo CC $<
-	@${CC} -c ${CFLAGS} $<
+prefix ?= /usr
+exec_prefix ?= $(prefix)
+includedir ?= $(prefix)/include
+datarootdir ?= $(prefix)/share
+bindir ?= $(exec_prefix)/bin
+mandir ?= $(datarootdir)/man
 
-${OBJ}: config.h config.mk
+includedirs = $(includedir) $(includedir)/freetype2
+incs = $(foreach d,$(includedirs),-I$d)
+
+src = $(wildcard *.c)
+obj = $(src:.c=.o)
+
+all: $(app)
+
+$(app): $(obj)
+	$(CC) -o $@ $^ $(ldflags) $(LDFLAGS)
 
 config.h:
-	@echo creating $@ from config.def.h
-	@cp config.def.h $@
+	cp config.def.h $@
 
-kotatko: ${OBJ}
-	@echo CC -o $@
-	@${CC} -o $@ ${OBJ} ${LDFLAGS}
+%.o: %.c config.h
+	$(CC) $(cflags) $(incs) $(CFLAGS) -o $@ -c $<
 
 clean:
-	@echo cleaning
-	@rm -f kotatko ${OBJ} kotatko-${VERSION}.tar.gz
+	rm -f $(obj) $(app)
 
-dist: clean
-	@echo creating dist tarball
-	@mkdir -p kotatko-${VERSION}
-	@cp -R LICENSE Makefile README config.def.h config.mk \
-		kotatko.1 drw.h util.h ${SRC} transient.c kotatko-${VERSION}
-	@tar -cf kotatko-${VERSION}.tar kotatko-${VERSION}
-	@gzip kotatko-${VERSION}.tar
-	@rm -rf kotatko-${VERSION}
-
-install: all
-	@echo installing executable file to ${DESTDIR}${PREFIX}/bin
-	@mkdir -p ${DESTDIR}${PREFIX}/bin
-	@cp -f kotatko ${DESTDIR}${PREFIX}/bin
-	@chmod 755 ${DESTDIR}${PREFIX}/bin/kotatko
-	@echo installing manual page to ${DESTDIR}${MANPREFIX}/man1
-	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
-	@sed "s/VERSION/${VERSION}/g" < kotatko.1 > ${DESTDIR}${MANPREFIX}/man1/kotatko.1
-	@chmod 644 ${DESTDIR}${MANPREFIX}/man1/kotatko.1
+install: $(app)
+	mkdir -p \
+		$(DESTDIR)$(bindir) \
+		$(DESTDIR)$(mandir)/man1
+	install -p -m0755 $(app) $(DESTDIR)$(bindir)/$(app)
+	install -p -m0644 $(app).1 $(DESTDIR)$(mandir)/man1/$(app).1
 
 uninstall:
-	@echo removing executable file from ${DESTDIR}${PREFIX}/bin
-	@rm -f ${DESTDIR}${PREFIX}/bin/kotatko
-	@echo removing manual page from ${DESTDIR}${MANPREFIX}/man1
-	@rm -f ${DESTDIR}${MANPREFIX}/man1/kotatko.1
+	rm -f \
+		$(DESTDIR)$(bindir)/$(app) \
+		$(DESTDIR)$(mandir)/man1/$(app).1
 
-.PHONY: all options clean dist install uninstall
+check:
+	@echo No test suite currently available.
+
+.PHONY: all clean install uninstall
