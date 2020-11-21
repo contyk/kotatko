@@ -55,10 +55,10 @@ static const Rule rules[] = {
      * isterminal,
      * noswallow,
      * monitor */
-    { "Alacritty", NULL, NULL, 0, 0, 0, 1, 1, -1 },
+    { "xterm", NULL, NULL, 0, 0, 0, 1, 1, -1 },
     { "Ibus-extension-gtk3", NULL, NULL, 0, 0, 1, 0, 0, -1 },
-    { ">", ">", ">", 0, 1, 1, 1, 0, -1 },
-    { "pamix", "pamix", "pamix", 0, 1, 1, 1, 1, -1 },
+    { ">", NULL, ">", 0, 1, 1, 1, 0, -1 },
+    { "pamix", NULL, "pamix", 0, 1, 1, 1, 1, -1 },
     { NULL, NULL, "Event Tester", 0, 0, 0, 0, 1, -1 },
 };
 
@@ -80,7 +80,7 @@ static const Layout layouts[] = {
     { MODKEY|ControlMask|ShiftMask, KEY, toggletag,  {.ui = 1 << TAG} }
 
 static const char *termcmd[] = {
-    "alacritty",
+    "xterm",
     NULL
 };
 
@@ -90,10 +90,10 @@ static const char *lockcmd[] = {
 };
 
 static const char *execcmd[] = {
-    "alacritty",
-    "--class", ">,>",
-    "--title", ">",
-    "--dimensions", "80", "6",
+    "xterm",
+    "-class", ">",
+    "-title", ">",
+    "-geometry", "80x6",
     "-e",
     "zsh", "-c",
     "print -rl -- ${(ko)commands} | "
@@ -111,10 +111,10 @@ static const char *shotcmd[] = {
 };
 
 static const char *amixcmd[] = {
-    "alacritty",
-    "--class", "pamix,pamix",
-    "--title", "pamix",
-    "--dimensions", "80", "25",
+    "xterm",
+    "-class", "pamix",
+    "-title", "pamix",
+    "-geometry", "80x25",
     "-e",
     "pamix",
     NULL
