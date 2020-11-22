@@ -55,7 +55,7 @@ static const Rule rules[] = {
      * isterminal,
      * noswallow,
      * monitor */
-    { "xterm", NULL, NULL, 0, 0, 0, 1, 1, -1 },
+    { "XTerm", "xterm", NULL, 0, 0, 0, 1, 1, -1 },
     { "Ibus-extension-gtk3", NULL, NULL, 0, 0, 1, 0, 0, -1 },
     { ">", NULL, ">", 0, 1, 1, 1, 0, -1 },
     { "pamix", NULL, "pamix", 0, 1, 1, 1, 1, -1 },
