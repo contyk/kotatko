@@ -1,6 +1,6 @@
 static const char *fonts[] = {
-    "Source Code Pro:style=Regular:size=9",
-    "Noto Sans Mono CJK JP:style=Regular:size=9",
+    "Source Code Pro Medium:size=8",
+    "Noto Sans Mono CJK JP:size=8",
 };
 /* Color scheme based on base16-gruvbox-dark-medium */
 static const char color[16][8] = {
