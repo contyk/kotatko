@@ -49,7 +49,7 @@ provided in `config.def.h` and consist of:
 * Thick window borders and large gaps.
 * [gruvbox][100] theme, the [base16 variant][101].
 * The urgent indicator is yellow.
-* The default terminal is [Alacritty][102]
+* The default terminal is [xterm][102]
 * The default launcher command relies on [zsh][103] and [fzf][104].
 * The default screenshot command relies on [maim][105] and [xclip][106].
 * The default mixer command invokes [pamix][107].
@@ -90,7 +90,7 @@ patches, or kotatko itself, and your name is missing, let me know.
 [50]: https://tools.suckless.org/dmenu/
 [100]: https://github.com/morhetz/gruvbox/
 [101]: https://github.com/dawikur/base16-gruvbox-scheme
-[102]: https://github.com/alacritty/alacritty/
+[102]: https://invisible-island.net/xterm/
 [103]: https://www.zsh.org/
 [104]: https://github.com/junegunn/fzf/
 [105]: https://github.com/naelstrof/maim
